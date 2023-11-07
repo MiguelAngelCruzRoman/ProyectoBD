@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">  
 <head>    
-    <title>Gestionar Médicos</title>    
+    <title>Gestionar Direcciones</title>    
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>  
@@ -9,7 +9,7 @@
 
 <body> 
     {% include "navbar.html" %}
-    <br><h1 align = "center">Tabla de los Médicos</h1><br>
+    <br><h1 align = "center">Tabla de Direcciones</h1><br>
     <div class="container">
         <div class="row">
             <div class="col-md-2">
@@ -19,19 +19,25 @@
                     <table class="table table-striped">
                         <thead >
                             <tr>
-                                <th>ID</th>
-                                <th>Especialidad</th>
-                                <th>Turno</th>
-                                <th>Dias laborales</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Municipio</th>
+                                <th>Colonia</th>
+                                <th>Calle</th>
+                                <th>C.P</th>
+                                <th>No.ext (No.interior)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for m in gmedicos %}
+                            {% for d in gdirecciones %}
                                 <tr>
-                                    <td>{{m.id}}</td>
-                                    <td>{{m.especialidad}}</td>
-                                    <td>{{m.turno}}</td>
-                                    <td>{{m.diaslaborales}}</td>
+                                    <td>{{d.tipo}}</td>
+                                    <td>{{d.estado}}</td>
+                                    <td>{{d.municipio}}</td>
+                                    <td>{{d.colonia}}</td>
+                                    <td>{{d.calle}}</td>
+                                    <td>{{d.cp}}</td>
+                                    <td>{{d.noext}}({{d.noint}})</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

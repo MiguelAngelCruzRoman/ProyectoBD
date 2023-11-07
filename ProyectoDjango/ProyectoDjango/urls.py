@@ -21,5 +21,12 @@ from api.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
-    path('gestionar/medicos', ViewMedicos),
+    path('view/consultas', ViewConsultas),
+    path('view/direcciones', ViewDireccion),
+    path('view/medicamentos', ViewMedicamentos),
+    path('view/medicos', ViewMedicos),
+    path('view/pacientes', ViewPaciente),
+    path('view/recetas', ViewReceta),
+    path('view/usersinfo', ViewUserinfo),
+    path('view/users', ViewUsers),
 ]
