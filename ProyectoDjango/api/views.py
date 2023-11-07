@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from .models import *
 from django.db import transaction
+from django.core.management import call_command
+import datetime
 
 
 # Create your views here.
@@ -119,3 +121,17 @@ def ViewUserinfo(request):
 def ViewUsers(request):
     usersListados = Users.objects.all()
     return render(request,"gestionarUsers.html",{"gusers": usersListados})
+
+def dump_opciones(request):
+    return render(request,"dumps.html")
+
+def dump_json(request):
+    current_datetime = datetime.datetime.now()
+    timestamp = current_datetime.strftime('%Y-%m-%d_%H-%M-%S') 
+    filename = f'backups/db_{timestamp}.json' 
+
+    call_command('dumpdata', output=filename, format='json')
+    with open(filename, 'rb') as file:
+        response = HttpResponse(file.read(), content_type='application/json')
+        response['Content-Disposition'] = f'attachment; filename="db_{timestamp}.json"'
+    return response

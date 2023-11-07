@@ -33,4 +33,6 @@ urlpatterns = [
     path('transaccion/RegresarCPDireccion', RegresarCPDireccion),
     path('transaccion/CambiarConsultas', CambiarConsultas),
     path('transaccion/RegresarConsultas', RegresarConsultas),
+    path('dumps/dump_json', dump_json),
+    path('dumps/', dump_opciones),
 ]
