@@ -29,4 +29,8 @@ urlpatterns = [
     path('view/recetas', ViewReceta),
     path('view/usersinfo', ViewUserinfo),
     path('view/users', ViewUsers),
+    path('transaccion/CambiarCPDireccion', CambiarCPDireccion),
+    path('transaccion/RegresarCPDireccion', RegresarCPDireccion),
+    path('transaccion/CambiarConsultas', CambiarConsultas),
+    path('transaccion/RegresarConsultas', RegresarConsultas),
 ]
