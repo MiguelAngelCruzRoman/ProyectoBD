@@ -203,7 +203,7 @@ class MedicoPaciente(models.Model):
 
 
 class Paciente(models.Model):
-    curp = models.CharField(db_column='CURP', unique=True, max_length=18)  # Field name made lowercase.
+    curp = models.CharField(db_column='CURP', max_length=18)  # Field name made lowercase.
     statusseguro = models.CharField(db_column='statusSeguro', max_length=50)  # Field name made lowercase.
     tiposangre = models.CharField(db_column='tipoSangre', max_length=3)  # Field name made lowercase.
     alergia = models.CharField(max_length=50, blank=True, null=True)
@@ -251,7 +251,6 @@ class Userinfo(models.Model):
     genero = models.CharField(max_length=1)
     telefono = models.CharField(max_length=15)
     foto = models.CharField(max_length=250)
-    direccion = models.IntegerField()
     status = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)

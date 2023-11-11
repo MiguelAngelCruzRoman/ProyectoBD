@@ -4,6 +4,7 @@ from .models import *
 from django.db import transaction
 from django.core.management import call_command
 import datetime
+from django.db import connection
 
 
 # Create your views here.
@@ -127,11 +128,32 @@ def dump_opciones(request):
 
 def dump_json(request):
     current_datetime = datetime.datetime.now()
-    timestamp = current_datetime.strftime('%Y-%m-%d_%H-%M-%S') 
-    filename = f'backups/db_{timestamp}.json' 
+    timestamp = current_datetime.strftime('%Y-%m-%d_%H-%M-%S')
 
-    call_command('dumpdata', output=filename, format='json')
+    filename = f'backups/db_{timestamp}.json'
+
+    call_command('dumpdata', output=filename, format='json',indent=2)
+
     with open(filename, 'rb') as file:
         response = HttpResponse(file.read(), content_type='application/json')
-        response['Content-Disposition'] = f'attachment; filename="db_{timestamp}.json"'
+        response['Content-Disposition'] = f'attachment; filename="backups/db_{timestamp}.json"'
     return response
+
+def dump_xml(request):
+    current_datetime = datetime.datetime.now()
+    timestamp = current_datetime.strftime('%Y-%m-%d_%H-%M-%S')
+
+    filename = f'backups/db_{timestamp}.xml'
+
+    call_command('dumpdata', output=filename, format='xml',indent=2)
+
+    with open(filename, 'rb') as file:
+        response = HttpResponse(file.read(), content_type='application/XML')
+        response['Content-Disposition'] = f'attachment; filename="backups/db_{timestamp}.xml"'
+    return response
+
+
+def STUDENT_DATA(request):
+    SD_DATA = Paciente.objects.all()
+    
+    return HttpResponse(SD_DATA) 
