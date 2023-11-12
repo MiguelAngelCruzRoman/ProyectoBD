@@ -29,12 +29,26 @@ urlpatterns = [
     path('view/recetas', ViewReceta),
     path('view/usersinfo', ViewUserinfo),
     path('view/users', ViewUsers),
+
+
     path('transaccion/CambiarCPDireccion', CambiarCPDireccion),
     path('transaccion/RegresarCPDireccion', RegresarCPDireccion),
     path('transaccion/CambiarConsultas', CambiarConsultas),
     path('transaccion/RegresarConsultas', RegresarConsultas),
+
+
     path('dumps/dump_json', dump_json),
     path('dumps/dump_xml', dump_xml),
     path('dumps/', dump_opciones),
-    path('SA/', STUDENT_DATA),
+
+    
+    path('viewMySQL/MedicamentosConsultaClinica', ViewMedicamentosConsultaClinica),
+    path('viewMySQL/MedicosPuebla', ViewMedicosPuebla),
+    path('viewMySQL/PacientesMedicosF',ViewPacientesMedicosF),
+    path('viewMySQL/PacientesMedicosM',ViewPacientesMedicosM),
+    path('viewMySQL/PacientesFumadores',ViewPacientesFumadores),
+    path('viewMySQL/PacientesAlcoholicos',ViewPacientesAlcoholicos),
+    path('viewMySQL/MedicosPacientesEspecialidad',ViewMedicosPacientesEspecialidad),
+
+    #path('SA/', STUDENT_DATA),
 ]
