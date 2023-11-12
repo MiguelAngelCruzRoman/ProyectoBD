@@ -35,6 +35,18 @@ urlpatterns = [
     path('transaccion/RegresarCPDireccion', RegresarCPDireccion),
     path('transaccion/CambiarConsultas', CambiarConsultas),
     path('transaccion/RegresarConsultas', RegresarConsultas),
+    path('transaccion/CambiarMedicamentos', CambiarMedicamentos),
+    path('transaccion/CorregirTurnos', CorregirTurnos),
+    path('transaccion/RegresarTurnos', RegresarTurnos),
+    path('transaccion/AtenderPacientes', AtenderPacientes),
+    path('transaccion/RevertirPacientes', RevertirPacientes),
+    path('transaccion/RecetasExpiradas', RecetasExpiradas),
+    path('transaccion/RevertirExpiradas', RevertirExpiradas),
+    path('transaccion/CambiarGenero', CambiarGenero),
+    path('transaccion/RevertirGenero', RevertirGenero),
+    path('transaccion/GenerarContraseña', GenerarContraseña),
+    path('transaccion/RevertirContraseña', RevertirContraseña),
+
 
 
     path('dumps/dump_json', dump_json),

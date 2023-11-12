@@ -7,6 +7,9 @@ import datetime
 from django.db import connection
 import os
 import mysql.connector
+from datetime import date
+from random import sample
+
 
 conexion = mysql.connector.connect(
     host = "localhost",
@@ -245,6 +248,195 @@ def RegresarCPDireccion(request):
         d2.save()
     direccionesListados = Direccion.objects.all()
     return render(request,"gestionarDireccion.html",{"gdirecciones": direccionesListados}) 
+
+def CambiarMedicamentos(request):
+    with transaction.atomic():
+        con = Medicamentos.objects.filter(formafarmaceutica='Tableta')
+        for c in con:
+            if c.dosis <300:
+                c.stock = c.stock + 200
+                c.fechacaducidad = c.fechacaducidad + datetime.timedelta(days=2048)
+                c.save()
+            else:
+                c.stock = c.stock + 100
+                c.fechacaducidad = c.fechacaducidad + datetime.timedelta(days=1024)
+                c.save()
+
+    medicamentosListado = Medicamentos.objects.all()#[:10]
+    return render(request,"gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
+
+
+def RegresarMedicamentos(request):
+    with transaction.atomic():
+        con = Medicamentos.objects.filter(formafarmaceutica='Tableta')
+        for c in con:
+            if c.dosis <300:
+                c.stock = c.stock - 200
+                c.fechacaducidad = c.fechacaducidad - datetime.timedelta(days=2048)
+                c.save()
+            else:
+                c.stock = c.stock - 100
+                c.fechacaducidad = c.fechacaducidad - datetime.timedelta(days=1024)
+                c.save()
+
+    medicamentosListado = Medicamentos.objects.all()#[:10]
+    return render(request,"gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
+
+
+def CorregirTurnos(request):
+    with transaction.atomic():
+        con = Medico.objects.all()
+        for c in con:
+            if c.turno == "matutino":
+                c.turno = "Matutino"
+                c.save()
+            
+            if c.turno == "vespertino":
+                c.turno = "Vespertino"
+                c.save()
+
+            if c.turno == "nocturno":
+                c.turno = "Nocturno"
+                c.save()
+
+    medicosListado = Medico.objects.all()#[:10]
+    return render(request,"gestionarMedicos.html",{"gmedicos": medicosListado})
+
+
+def RegresarTurnos(request):
+    with transaction.atomic():
+        con = Medico.objects.all()
+        for c in con:
+            if c.turno == "Matutino":
+                c.turno = "matutino"
+                c.save()
+            
+            if c.turno == "Vespertino":
+                c.turno = "vespertino"
+                c.save()
+
+            if c.turno == "Nocturno":
+                c.turno = "nocturno"
+                c.save()
+
+    medicosListado = Medico.objects.all()#[:10]
+    return render(request,"gestionarMedicos.html",{"gmedicos": medicosListado})
+
+def AtenderPacientes(request):
+    with transaction.atomic():
+        con = Paciente.objects.all()
+        for c in con:
+            if (c.statusseguro == "Ninguno" and c.alergia !="ninguna" and c.tiposangre=="O"):
+                c.fecharevision = c.fecharevision +datetime.timedelta(days=2048)
+                c.motivorevision = "Campaña gratuita de salud"
+                c.save()
+            
+
+    pacientesListado = Paciente.objects.all()#[:10]
+    return render(request,"gestionarPacientes.html",{"gpacientes": pacientesListado})
+
+
+def RevertirPacientes(request):
+    with transaction.atomic():
+        con = Paciente.objects.all()
+        for c in con:
+            if (c.statusseguro == "Ninguno" and c.alergia !="ninguna" and c.tiposangre=="O"):
+                c.fecharevision =c.fecharevision- datetime.timedelta(days=2048)
+                c.motivorevision = "Revisión"
+                c.save()
+            
+
+    pacientesListado = Paciente.objects.all()#[:10]
+    return render(request,"gestionarPacientes.html",{"gpacientes": pacientesListado})
+
+def RecetasExpiradas(request):
+    with transaction.atomic():
+        con = Receta.objects.all()
+        for c in con:
+            if (c.fechavencimiento <= date.today()):
+                c.status = 0
+                c.save()         
+
+    recetasListado = Receta.objects.all()#[:10]
+    return render(request,"gestionarRecetas.html",{"grecetas": recetasListado})
+
+def RevertirExpiradas(request):
+    with transaction.atomic():
+        con = Receta.objects.all()
+        for c in con:
+            if (c.status == 0):
+                c.status = 1
+                c.save()         
+
+    recetasListado = Receta.objects.all()#[:10]
+    return render(request,"gestionarRecetas.html",{"grecetas": recetasListado})
+
+def RevertirExpiradas(request):
+    with transaction.atomic():
+        con = Receta.objects.all()
+        for c in con:
+            if (c.status == 0):
+                c.status = 1
+                c.save()         
+
+    recetasListado = Receta.objects.all()#[:10]
+    return render(request,"gestionarRecetas.html",{"grecetas": recetasListado})
+
+def CambiarGenero(request):
+    with transaction.atomic():
+        con = Userinfo.objects.all()
+        for c in con:
+            if (c.genero == "M"):
+                c.genero = "F"
+                c.save()
+            else:
+                c.genero = "M"
+                c.save()        
+
+    usersInfoListado = Userinfo.objects.all()#[:10]
+    return render(request,"gestionaruserInfo.html",{"guserInfo": usersInfoListado})
+
+
+def RevertirGenero(request):
+    with transaction.atomic():
+        con = Userinfo.objects.all()
+        for c in con:
+            if (c.genero == "F"):
+                c.genero = "M"
+                c.save()
+            else:
+                c.genero = "F"
+                c.save()        
+
+    usersInfoListado = Userinfo.objects.all()#[:10]
+    return render(request,"gestionaruserInfo.html",{"guserInfo": usersInfoListado})
+
+def GenerarContraseña(request):
+    with transaction.atomic():
+        con = Users.objects.all()
+        for c in con:
+            abc_minusculas = "abcdefghijklmnopqrstuvwxyz"
+            abc_mayusculas = abc_minusculas.upper() 
+            numeros = "0123456789"
+            simbolos = "[]()*;/,_-"
+            secuencia = abc_minusculas + abc_mayusculas + numeros + simbolos
+            password_union = sample(secuencia, 10)
+            password_result = "".join(password_union)
+            c.password = password_result
+            c.save()        
+
+    usersListado = Users.objects.all()#[:10]
+    return render(request,"gestionarUsers.html",{"gusers": usersListado})
+
+def RevertirContraseña(request):
+    with transaction.atomic():
+        con = Users.objects.all()
+        for c in con:
+            c.password = "password"+ str(c.id)
+            c.save()        
+
+    usersListado = Users.objects.all()#[:10]
+    return render(request,"gestionarUsers.html",{"gusers": usersListado})
 #----------------------------------------------------------------------------------------------------
 
 
