@@ -61,6 +61,7 @@ urlpatterns = [
     path('viewMySQL/PacientesFumadores',ViewPacientesFumadores),
     path('viewMySQL/PacientesAlcoholicos',ViewPacientesAlcoholicos),
     path('viewMySQL/MedicosPacientesEspecialidad',ViewMedicosPacientesEspecialidad),
+    path('viewMySQL/UsernameNombre',ViewUsernameNombre),
 
     #path('SA/', STUDENT_DATA),
 ]

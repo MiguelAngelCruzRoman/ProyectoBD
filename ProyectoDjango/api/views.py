@@ -544,4 +544,19 @@ def ViewMedicosPacientesEspecialidad(request):
         arreglo.append(v[3])
 
     return render(request,"MedicosPacientesEspecialidad.html",{"arreglo":arreglo})
+
+def ViewUsernameNombre(request):
+    cursor = conexion.cursor()
+    cursor.execute("select * from username_nombre ")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+        arreglo.append(v[3])
+        arreglo.append(v[4])
+
+    return render(request,"UsernameNombre.html",{"arreglo":arreglo})
 #----------------------------------------------------------------------------------------------------
