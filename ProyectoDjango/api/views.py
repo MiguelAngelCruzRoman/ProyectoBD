@@ -138,6 +138,73 @@ def dump_xml(request):
 
 
 
+#----------------------------------------------------------------------------------------------------
+
+#Consultas tablas relacionadas 
+
+#----------------------------------------------------------------------------------------------------
+def RecetaMedicamento(request):
+    cursor = conexion.cursor()
+    cursor.execute("select rm.receta,group_concat(' ',m.nombreComercial,' (',m.nombreCinetifico,' de ',m.dosis,' mg)' ),r.fechaVencimiento  from receta_medicamento as rm join medicamentos as m on rm.medicamento = m.id join receta as r on rm.receta = r.id group by rm.receta order by rm.receta")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+    
+
+    return render(request,"recetaMedicamento.html",{"recetasMedicamento": arreglo})
+
+
+def PacientesPorCadaMedico(request):
+    cursor = conexion.cursor()
+    cursor.execute("select mp.id, concat(uim.primerNombre,' ',uim.apellidoPaterno,' ',uim.apellidoMaterno),group_concat(' ',uip.primerNombre,' ', uip.apellidoPaterno,' ',uip.apellidoMaterno) from medico_paciente as mp left join medico as m on mp.medico = m.id left join paciente as p on mp.paciente = p.id join users as up on up.id = p.id join userinfo as uip  on uip.id = up.id join users as um on um.id = m.id join userinfo as uim  on uim.id = um.id group by mp.medico order by mp.id")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+    
+
+    return render(request,"PacientesPorCadaMedico.html",{"PacientesPorCadaMedico": arreglo})
+
+
+def MedicosPorCadaPaciente(request):
+    cursor = conexion.cursor()
+    cursor.execute("select mp.id, concat(uip.primerNombre,' ', uip.apellidoPaterno,' ',uip.apellidoMaterno),group_concat(' ',uim.primerNombre,' ',uim.apellidoPaterno,' ',uim.apellidoMaterno) from medico_paciente as mp left join medico as m on mp.medico = m.id left join paciente as p on mp.paciente = p.id join users as up on up.id = p.id join userinfo as uip  on uip.id = up.id join users as um on um.id = m.id join userinfo as uim  on uim.id = um.id group by mp.paciente order by mp.id")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+
+    return render(request,"MedicosPorCadaPaciente.html",{"MedicosPorCadaPaciente": arreglo})
+
+
+
+def UsuarioDireccionInfoUsuario(request):
+    cursor = conexion.cursor()
+    cursor.execute("select u.id,u.username, concat(ui.primerNombre, ' ', ui.apellidoPaterno, ' ', ui.apellidoMaterno),concat(d.municipio,', ',d.estado) from users as u join userinfo as ui on u.id = ui.id join direccion as d on d.userinfo = ui.id")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+        arreglo.append(v[3])
+
+    return render(request,"UsuarioDireccionInfoUsuario.html",{"UsuarioDireccionInfoUsuario": arreglo})
+
+#----------------------------------------------------------------------------------------------------
+
+
 
 #----------------------------------------------------------------------------------------------------
 

@@ -31,6 +31,12 @@ urlpatterns = [
     path('view/users', ViewUsers),
 
 
+    path('consultaRelacionada/RecetaMedicamento',RecetaMedicamento),
+    path('consultaRelacionada/PacientesPorCadaMedico',PacientesPorCadaMedico),
+    path('consultaRelacionada/MedicosPorCadaPaciente',MedicosPorCadaPaciente),
+    path('consultaRelacionada/UsuarioDireccionInfoUsuario',UsuarioDireccionInfoUsuario),
+
+
     path('transaccion/CambiarCPDireccion', CambiarCPDireccion),
     path('transaccion/RegresarCPDireccion', RegresarCPDireccion),
     path('transaccion/CambiarConsultas', CambiarConsultas),
