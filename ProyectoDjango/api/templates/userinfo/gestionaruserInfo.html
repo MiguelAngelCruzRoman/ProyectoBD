@@ -22,11 +22,18 @@
                     <a href="/transaccion/RevertirGenero" class="btn btn-secondary">Revertir Genero</a>
                 </div>
             </div>
-            <div class="col-md-2"></div>
             <div class="col-md-2">
                 <h6 align="center">Vistas</h6>
                 <div class="btn-group">
                     <a href="/viewMySQL/UsernameNombre" class="btn btn-secondary">Relacionar con Usuario</a>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+
+            <div class="col-md-2">
+                <h6 align="center">Operación</h6> 
+                <div class="btn-group">
+                    <a href="/view/usersinfo/agregar" class="btn btn-success">Agregar Información <br> de Usuario</a>
                 </div>
             </div>
         </div>
@@ -48,6 +55,7 @@
                                 <th>Status</th>
                                 <th>Género</th>
                                 <th>Teléfono</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,6 +66,10 @@
                                 <td>{{ui.status}}</td>
                                 <td>{{ui.genero}}</td>
                                 <td>{{ui.telefono}}</td>
+                                <td>
+                                    <a href="/view/usersinfo/editar/{{ui.id.id}}" class="btn btn-warning">Editar</a>
+                                    <a href="/view/usersinfo/eliminar/{{ui.id.id}}" class="btn btn-danger">Eliminar</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

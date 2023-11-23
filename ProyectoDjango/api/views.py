@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from .models import *
 from django.db import transaction
@@ -9,7 +9,7 @@ import os
 import mysql.connector
 from datetime import date
 from random import sample
-
+from api.forms import *
 
 conexion = mysql.connector.connect(
     host = "localhost",
@@ -31,13 +31,13 @@ def home (request):
 
 def ViewConsultas(request):
     consultasListados = Consultas.objects.all()
-    return render(request,"gestionarConsultas.html",{"gconsultas": consultasListados})
+    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
 
 
 
 def ViewDireccion(request):
     direccionesListados = Direccion.objects.all()
-    return render(request,"gestionarDireccion.html",{"gdirecciones": direccionesListados})
+    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})
 
 
 
@@ -55,28 +55,258 @@ def ViewMedicamentos(request):
         arreglo.append(v[3])
 
     medicamentosListados = Medicamentos.objects.all()
-    return render(request,"gestionarMedicamentos.html",{"gmedicamentos": medicamentosListados,"arreglo":arreglo})
+    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListados,"arreglo":arreglo})
 
 def ViewMedicos(request):
     medicosListados = Medico.objects.all()
-    return render(request,"gestionarMedicos.html",{"gmedicos": medicosListados})
+    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListados})
 
 def ViewPaciente(request):
     pacienteListados = Paciente.objects.all()
-    return render(request,"gestionarPacientes.html",{"gpacientes": pacienteListados})
+    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacienteListados})
 
 def ViewReceta(request):
     recetasListados = Receta.objects.all()
-    return render(request,"gestionarRecetas.html",{"grecetas": recetasListados})
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListados})
 
 def ViewUserinfo(request):
     userInfoListados = Userinfo.objects.all()
-    return render(request,"gestionaruserInfo.html",{"guserInfo": userInfoListados})
+    return render(request,"userinfo/gestionaruserInfo.html",{"guserInfo": userInfoListados})
 
 def ViewUsers(request):
     usersListados = Users.objects.all()
-    return render(request,"gestionarUsers.html",{"gusers": usersListados})
+    return render(request,"users/gestionarUsers.html",{"gusers": usersListados})
 #----------------------------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------------------------------------------------
+
+#Sección para CRUD'S
+
+#----------------------------------------------------------------------------------------------------
+
+def crearMedicamento(request):
+    formulario = MedicamentosForm(request.POST or None)
+
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/medicamentos')
+
+    return render(request,'medicamento/crearMedicamento.html',{'formulario':formulario})
+
+def editarMedicamento(request,id):
+    medicamento = Medicamentos.objects.get(id=id) 
+    formulario = MedicamentosForm(request.POST or None, instance=medicamento)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/medicamentos')
+
+    return render(request,'medicamento/editarMedicamento.html',{'formulario':formulario})
+
+def eliminarMedicamento(request,id):
+    medicamento = Medicamentos.objects.get(id=id) 
+    medicamento.delete()
+
+    return redirect ('/view/medicamentos')
+
+
+
+
+def crearReceta(request):
+    formulario = RecetasForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/recetas')
+
+    return render(request,'recetas/crearReceta.html',{'formulario':formulario})
+
+def editarReceta(request,id):
+    receta = Receta.objects.get(id=id) 
+    formulario = RecetasForm(request.POST or None, instance=receta)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/recetas')
+
+    return render(request,'recetas/editarReceta.html',{'formulario':formulario})
+
+def eliminarReceta(request,id):
+    receta = Receta.objects.get(id=id) 
+    receta.delete()
+
+    return redirect ('/view/recetas')
+
+
+
+def crearConsulta(request):
+    formulario = ConsultasForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/consultas')
+
+    return render(request,'consultas/crearConsulta.html',{'formulario':formulario})
+
+def editarConsulta(request,id):
+    consulta = Consultas.objects.get(id=id) 
+    formulario = ConsultasForm(request.POST or None, instance=consulta)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/consultas')
+
+    return render(request,'consultas/editarConsulta.html',{'formulario':formulario})
+
+def eliminarConsulta(request,id):
+    consulta = Consultas.objects.get(id=id) 
+    consulta.delete()
+
+    return redirect ('/view/consultas')
+
+
+
+
+def crearDireccion(request):
+    formulario = DireccionesForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/direcciones')
+
+    return render(request,'direcciones/crearDireccion.html',{'formulario':formulario})
+
+def editarDireccion(request,id):
+    direccion = Direccion.objects.get(id=id) 
+    formulario = DireccionesForm(request.POST or None, instance=direccion)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/direcciones')
+
+    return render(request,'direcciones/editarDireccion.html',{'formulario':formulario})
+
+def eliminarDireccion(request,id):
+    direccion = Direccion.objects.get(id=id) 
+    direccion.delete()
+
+    return redirect ('/view/direcciones')
+
+
+
+
+def crearMedico(request):
+    formulario = MedicosForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/medicos')
+
+    return render(request,'medicos/crearMedico.html',{'formulario':formulario})
+
+def editarMedico(request,id):
+    medico = Medico.objects.get(id=id) 
+    formulario = MedicosForm(request.POST or None, instance=medico)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/medicos')
+
+    return render(request,'medicos/editarMedico.html',{'formulario':formulario})
+
+def eliminarMedico(request,id):
+    medico = Medico.objects.get(id=id) 
+    medico.delete()
+
+    return redirect ('/view/medicos')
+
+
+
+
+
+
+def crearPaciente(request):
+    formulario = PacientesForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/pacientes')
+
+    return render(request,'pacientes/crearPaciente.html',{'formulario':formulario})
+
+def editarPaciente(request,id):
+    paciente = Paciente.objects.get(id=id) 
+    formulario = PacientesForm(request.POST or None, instance=paciente)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/pacientes')
+
+    return render(request,'pacientes/editarPaciente.html',{'formulario':formulario})
+
+def eliminarPaciente(request,id):
+    paciente = Paciente.objects.get(id=id) 
+    paciente.delete()
+
+    return redirect ('/view/pacientes')
+
+
+def crearUserInfo(request):
+    formulario = UserinfoForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/usersinfo')
+
+    return render(request,'userinfo/crearUserInfo.html',{'formulario':formulario})
+
+def editarUserInfo(request,id):
+    userinfo = Userinfo.objects.get(id=id) 
+    formulario = UserinfoForm(request.POST or None, instance=userinfo)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/usersinfo')
+
+    return render(request,'userinfo/editarUserInfo.html',{'formulario':formulario})
+
+def eliminarUserInfo(request,id):
+    userinfo = Userinfo.objects.get(id=id) 
+    userinfo.delete()
+
+    return redirect ('/view/usersinfo')
+
+
+
+
+
+
+def crearUser(request):
+    formulario = UsersForm(request.POST or None)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/users')
+
+    return render(request,'users/crearUser.html',{'formulario':formulario})
+
+def editarUser(request,id):
+    user = Users.objects.get(id=id) 
+    formulario = UsersForm(request.POST or None, instance=user)
+    
+    if formulario.is_valid():
+        formulario.save()
+        return redirect ('/view/users')
+
+    return render(request,'users/editarUser.html',{'formulario':formulario})
+
+def eliminarUser(request,id):
+    user = Users.objects.get(id=id) 
+    user.delete()
+
+    return redirect ('/view/users')
+
 
 
 
@@ -155,7 +385,7 @@ def RecetaMedicamento(request):
         arreglo.append(v[2])
     
 
-    return render(request,"recetaMedicamento.html",{"recetasMedicamento": arreglo})
+    return render(request,"tablasRelacionadas/recetaMedicamento.html",{"recetasMedicamento": arreglo})
 
 
 def PacientesPorCadaMedico(request):
@@ -170,7 +400,7 @@ def PacientesPorCadaMedico(request):
         arreglo.append(v[2])
     
 
-    return render(request,"PacientesPorCadaMedico.html",{"PacientesPorCadaMedico": arreglo})
+    return render(request,"tablasRelacionadas/PacientesPorCadaMedico.html",{"PacientesPorCadaMedico": arreglo})
 
 
 def MedicosPorCadaPaciente(request):
@@ -184,7 +414,7 @@ def MedicosPorCadaPaciente(request):
         arreglo.append(v[1])
         arreglo.append(v[2])
 
-    return render(request,"MedicosPorCadaPaciente.html",{"MedicosPorCadaPaciente": arreglo})
+    return render(request,"tablasRelacionadas/MedicosPorCadaPaciente.html",{"MedicosPorCadaPaciente": arreglo})
 
 
 
@@ -200,7 +430,7 @@ def UsuarioDireccionInfoUsuario(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"UsuarioDireccionInfoUsuario.html",{"UsuarioDireccionInfoUsuario": arreglo})
+    return render(request,"tablasRelacionadas/UsuarioDireccionInfoUsuario.html",{"UsuarioDireccionInfoUsuario": arreglo})
 
 #----------------------------------------------------------------------------------------------------
 
@@ -246,7 +476,7 @@ def CambiarConsultas(request):
             c.save()
 
     consultasListados = Consultas.objects.all()#[:10]
-    return render(request,"gestionarConsultas.html",{"gconsultas": consultasListados})
+    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
 
 
 def RegresarConsultas(request):
@@ -257,7 +487,7 @@ def RegresarConsultas(request):
             c.save()
 
     consultasListados = Consultas.objects.all()#[:10]
-    return render(request,"gestionarConsultas.html",{"gconsultas": consultasListados})
+    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
 
 def CambiarCPDireccion(request):
     with transaction.atomic():
@@ -286,7 +516,7 @@ def CambiarCPDireccion(request):
         d2.save()
 
     direccionesListados = Direccion.objects.all()
-    return render(request,"gestionarDireccion.html",{"gdirecciones": direccionesListados})    
+    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})    
 
 def RegresarCPDireccion(request):
     with transaction.atomic():
@@ -314,7 +544,7 @@ def RegresarCPDireccion(request):
         d2.colonia ='Zapopan'
         d2.save()
     direccionesListados = Direccion.objects.all()
-    return render(request,"gestionarDireccion.html",{"gdirecciones": direccionesListados}) 
+    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados}) 
 
 def CambiarMedicamentos(request):
     with transaction.atomic():
@@ -330,7 +560,7 @@ def CambiarMedicamentos(request):
                 c.save()
 
     medicamentosListado = Medicamentos.objects.all()#[:10]
-    return render(request,"gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
+    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
 
 
 def RegresarMedicamentos(request):
@@ -347,7 +577,7 @@ def RegresarMedicamentos(request):
                 c.save()
 
     medicamentosListado = Medicamentos.objects.all()#[:10]
-    return render(request,"gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
+    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
 
 
 def CorregirTurnos(request):
@@ -367,7 +597,7 @@ def CorregirTurnos(request):
                 c.save()
 
     medicosListado = Medico.objects.all()#[:10]
-    return render(request,"gestionarMedicos.html",{"gmedicos": medicosListado})
+    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListado})
 
 
 def RegresarTurnos(request):
@@ -387,7 +617,7 @@ def RegresarTurnos(request):
                 c.save()
 
     medicosListado = Medico.objects.all()#[:10]
-    return render(request,"gestionarMedicos.html",{"gmedicos": medicosListado})
+    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListado})
 
 def AtenderPacientes(request):
     with transaction.atomic():
@@ -400,7 +630,7 @@ def AtenderPacientes(request):
             
 
     pacientesListado = Paciente.objects.all()#[:10]
-    return render(request,"gestionarPacientes.html",{"gpacientes": pacientesListado})
+    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacientesListado})
 
 
 def RevertirPacientes(request):
@@ -414,7 +644,7 @@ def RevertirPacientes(request):
             
 
     pacientesListado = Paciente.objects.all()#[:10]
-    return render(request,"gestionarPacientes.html",{"gpacientes": pacientesListado})
+    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacientesListado})
 
 def RecetasExpiradas(request):
     with transaction.atomic():
@@ -425,7 +655,7 @@ def RecetasExpiradas(request):
                 c.save()         
 
     recetasListado = Receta.objects.all()#[:10]
-    return render(request,"gestionarRecetas.html",{"grecetas": recetasListado})
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListado})
 
 def RevertirExpiradas(request):
     with transaction.atomic():
@@ -436,7 +666,7 @@ def RevertirExpiradas(request):
                 c.save()         
 
     recetasListado = Receta.objects.all()#[:10]
-    return render(request,"gestionarRecetas.html",{"grecetas": recetasListado})
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListado})
 
 def RevertirExpiradas(request):
     with transaction.atomic():
@@ -447,7 +677,7 @@ def RevertirExpiradas(request):
                 c.save()         
 
     recetasListado = Receta.objects.all()#[:10]
-    return render(request,"gestionarRecetas.html",{"grecetas": recetasListado})
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListado})
 
 def CambiarGenero(request):
     with transaction.atomic():
@@ -461,7 +691,7 @@ def CambiarGenero(request):
                 c.save()        
 
     usersInfoListado = Userinfo.objects.all()#[:10]
-    return render(request,"gestionaruserInfo.html",{"guserInfo": usersInfoListado})
+    return render(request,"userinfo/gestionaruserInfo.html",{"guserInfo": usersInfoListado})
 
 
 def RevertirGenero(request):
@@ -476,7 +706,7 @@ def RevertirGenero(request):
                 c.save()        
 
     usersInfoListado = Userinfo.objects.all()#[:10]
-    return render(request,"gestionaruserInfo.html",{"guserInfo": usersInfoListado})
+    return render(request,"userinfo/gestionaruserInfo.html",{"guserInfo": usersInfoListado})
 
 def GenerarContraseña(request):
     with transaction.atomic():
@@ -493,7 +723,7 @@ def GenerarContraseña(request):
             c.save()        
 
     usersListado = Users.objects.all()#[:10]
-    return render(request,"gestionarUsers.html",{"gusers": usersListado})
+    return render(request,"users/gestionarUsers.html",{"gusers": usersListado})
 
 def RevertirContraseña(request):
     with transaction.atomic():
@@ -503,7 +733,7 @@ def RevertirContraseña(request):
             c.save()        
 
     usersListado = Users.objects.all()#[:10]
-    return render(request,"gestionarUsers.html",{"gusers": usersListado})
+    return render(request,"users/gestionarUsers.html",{"gusers": usersListado})
 #----------------------------------------------------------------------------------------------------
 
 
@@ -527,7 +757,7 @@ def ViewMedicamentosConsultaClinica(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"MedicamentosConsultaClinica.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/MedicamentosConsultaClinica.html",{"arreglo":arreglo})
 
 def ViewMedicosPuebla(request):
     cursor = conexion.cursor()
@@ -540,7 +770,7 @@ def ViewMedicosPuebla(request):
         arreglo.append(v[1])
         arreglo.append(v[2])
 
-    return render(request,"MedicosPuebla.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/MedicosPuebla.html",{"arreglo":arreglo})
 
 def ViewPacientesMedicosF(request):
     cursor = conexion.cursor()
@@ -554,7 +784,7 @@ def ViewPacientesMedicosF(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"PacientesMedicosF.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/PacientesMedicosF.html",{"arreglo":arreglo})
 
 def ViewPacientesMedicosM(request):
     cursor = conexion.cursor()
@@ -568,7 +798,7 @@ def ViewPacientesMedicosM(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"PacientesMedicosM.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/PacientesMedicosM.html",{"arreglo":arreglo})
 
 def ViewPacientesFumadores(request):
     cursor = conexion.cursor()
@@ -582,7 +812,7 @@ def ViewPacientesFumadores(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"PacientesFumadores.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/PacientesFumadores.html",{"arreglo":arreglo})
 
 def ViewPacientesAlcoholicos(request):
     cursor = conexion.cursor()
@@ -596,7 +826,7 @@ def ViewPacientesAlcoholicos(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"PacientesAlcoholicos.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/PacientesAlcoholicos.html",{"arreglo":arreglo})
 
 def ViewMedicosPacientesEspecialidad(request):
     cursor = conexion.cursor()
@@ -610,7 +840,7 @@ def ViewMedicosPacientesEspecialidad(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"MedicosPacientesEspecialidad.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/MedicosPacientesEspecialidad.html",{"arreglo":arreglo})
 
 def ViewUsernameNombre(request):
     cursor = conexion.cursor()
@@ -625,5 +855,5 @@ def ViewUsernameNombre(request):
         arreglo.append(v[3])
         arreglo.append(v[4])
 
-    return render(request,"UsernameNombre.html",{"arreglo":arreglo})
+    return render(request,"viewsMySQL/UsernameNombre.html",{"arreglo":arreglo})
 #----------------------------------------------------------------------------------------------------

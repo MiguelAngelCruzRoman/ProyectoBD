@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Gestionar Consultas</title>
+    <title>Gestionar Recetas</title>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -11,17 +11,17 @@
 
 <body>
     {% include "navbar.html" %}
+
     <div class="container">
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-2">
                 <h6 align="center">Transacciones</h6>
                 <div class="btn-group">
-                    <a href="/transaccion/CambiarConsultas" class="btn btn-secondary">Cambiar Lugar</a>
-                    <a href="/transaccion/RegresarConsultas" class="btn btn-secondary">Regresar Lugar</a>
+                    <a href="/transaccion/RecetasExpiradas" class="btn btn-secondary">Recetas Expiradas</a>
+                    <a href="/transaccion/RevertirExpiradas" class="btn btn-secondary">Recetas Sin Expirar</a>
                 </div>
             </div>
-            <div class="col-md-2"></div>
             <div class="col-md-2">
                 <h6 align="center">Vistas</h6>
                 <div class="btn-group">
@@ -29,11 +29,19 @@
                         Clínicas</a>
                 </div>
             </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-2">
+                <h6 align="center">Operación</h6> 
+                <div class="btn-group">
+                    <a href="/view/recetas/agregar" class="btn btn-success">Agregar Receta</a>
+                </div>
+            </div>
         </div>
     </div>
 
+
     <br>
-    <h1 align="center">Tabla de Consultas</h1><br>
+    <h1 align="center">Tabla de las Recetas</h1><br>
     <div class="container">
         <div class="row">
             <div class="col-md-2">
@@ -43,19 +51,22 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Lugar</th>
-                                <th>Hora</th>
-                                <th>Fecha</th>
-                                <th>Motivo</th>
+                                <th>ID</th>
+                                <th>Fecha de Vencimiento</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for c in gconsultas %}
+                            {% for r in grecetas %}
                             <tr>
-                                <td>{{c.lugar}}</td>
-                                <td>{{c.hora}}</td>
-                                <td>{{c.fecha}}</td>
-                                <td>{{c.motivo}}</td>
+                                <td>{{r.id}}</td>
+                                <td>{{r.fechavencimiento}}</td>
+                                <td>{{r.status}}</td>
+                                <td>
+                                    <a href="/view/recetas/editar/{{r.id}}" class="btn btn-warning">Editar</a>
+                                    <a href="/view/recetas/eliminar/{{r.id}}" class="btn btn-danger">Eliminar</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

@@ -14,7 +14,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-2">
                 <h6 align="center">Transacciones</h6>
                 <div class="btn-group">
@@ -22,12 +22,20 @@
                     <a href="/transaccion/RevertirContraseña" class="btn btn-secondary">Revertir Contraseñas</a>
                 </div>
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-2">
                 <h6 align="center">Vistas</h6>
                 <div class="btn-group">
                     <a href="/viewMySQL/UsernameNombre" class="btn btn-secondary">Relacionar con Información de
                         Usuario</a>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+
+            <div class="col-md-2">
+                <h6 align="center">Operación</h6> 
+                <div class="btn-group">
+                    <a href="/view/users/agregar" class="btn btn-success">Agregar Usuario</a>
                 </div>
             </div>
         </div>
@@ -49,6 +57,7 @@
                                 <th>Correo</th>
                                 <th>Contraseña</th>
                                 <th>Status</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,6 +67,10 @@
                                 <td>{{u.correo}}</td>
                                 <td>{{u.password}}</td>
                                 <td>{{u.status}}</td>
+                                <td>
+                                    <a href="/view/users/editar/{{u.id}}" class="btn btn-warning">Editar</a>
+                                    <a href="/view/users/eliminar/{{u.id}}" class="btn btn-danger">Eliminar</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

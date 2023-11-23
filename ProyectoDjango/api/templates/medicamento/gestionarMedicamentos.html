@@ -13,7 +13,15 @@
     {% include "navbar.html" %}
     <div class="container">
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <h6 align="center">Vistas</h6>
+                <div class="btn-group">
+                    <a href="/viewMySQL/MedicamentosConsultaClinica" class="btn btn-secondary">Medicamentos en
+                        Clínicas</a>
+                </div>
+            </div>
+            
             <div class="col-md-2">
                 <h6 align="center">Transacciones</h6>
                 <div class="btn-group">
@@ -23,10 +31,9 @@
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-2">
-                <h6 align="center">Vistas</h6>
+                <h6 align="center">Operación</h6> 
                 <div class="btn-group">
-                    <a href="/viewMySQL/MedicamentosConsultaClinica" class="btn btn-secondary">Medicamentos en
-                        Clínicas</a>
+                    <a href="/view/medicamentos/agregar" class="btn btn-success">Agregar Medicamento</a>
                 </div>
             </div>
         </div>
@@ -38,7 +45,7 @@
         <div class="row">
             <div class="col-md-2">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -49,6 +56,7 @@
                                 <th>Fecha de Caducidad</th>
                                 <th>Lote de Fabricación</th>
                                 <th>Stock</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +68,10 @@
                                 <td>{{m.fechacaducidad}}</td>
                                 <td>{{m.lotefabricacion}}</td>
                                 <td>{{m.stock}}</td>
+                                <td>
+                                        <a href="/view/medicamentos/editar/{{m.id}}" class="btn btn-warning">Editar</a>
+                                        <a href="/view/medicamentos/eliminar/{{m.id}}" class="btn btn-danger">Eliminar</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

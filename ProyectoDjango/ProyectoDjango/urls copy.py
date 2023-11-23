@@ -38,34 +38,21 @@ urlpatterns = [
 
 
     path('view/medicos', ViewMedicos),
-    path('view/medicos/agregar', crearMedico),
-    path('view/medicos/editar/<int:id>', editarMedico),
-    path('view/medicos/eliminar/<int:id>', eliminarMedico),
+
 
     path('view/pacientes', ViewPaciente),
-    path('view/pacientes/agregar', crearPaciente),
-    path('view/pacientes/editar/<int:id>', editarPaciente),
-    path('view/pacientes/eliminar/<int:id>', eliminarPaciente),
     
     
     path('view/recetas', ViewReceta),
-    path('view/recetas/agregar', crearReceta),
+     path('view/recetas/agregar', crearReceta),
     path('view/recetas/editar/<int:id>', editarReceta),
     path('view/recetas/eliminar/<int:id>', eliminarReceta),
     
     path('view/usersinfo', ViewUserinfo),
-    path('view/usersinfo/agregar', crearUserInfo),
-    path('view/usersinfo/editar/<int:id>', editarUserInfo),
-    path('view/usersinfo/eliminar/<int:id>', eliminarUserInfo),
+    
     
     path('view/users', ViewUsers),
-    path('view/users/agregar', crearUser),
-    path('view/users/editar/<int:id>', editarUser),
-    path('view/users/eliminar/<int:id>', eliminarUser),
 
-
-
-    
 
     path('consultaRelacionada/RecetaMedicamento',RecetaMedicamento),
     path('consultaRelacionada/PacientesPorCadaMedico',PacientesPorCadaMedico),

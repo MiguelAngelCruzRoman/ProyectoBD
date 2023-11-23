@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Gestionar Pacientes</title>
+    <title>Gestionar Médicos</title>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -11,63 +11,64 @@
 
 <body>
     {% include "navbar.html" %}
-
     <div class="container">
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-2">
                 <h6 align="center">Transacciones</h6>
                 <div class="btn-group">
-                    <a href="/transaccion/AtenderPacientes" class="btn btn-secondary">Atender Pacientes</a>
-                    <a href="/transaccion/RevertirPacientes" class="btn btn-secondary">Revertir Pacientes</a>
+                    <a href="/transaccion/CorregirTurnos" class="btn btn-secondary">Corregir Turnos</a>
+                    <a href="/transaccion/RegresarTurnos" class="btn btn-secondary">Revertir Turnos</a>
                 </div>
             </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h6 align="center">Vistas</h6>
                 <div class="btn-group">
+                    <a href="/viewMySQL/MedicosPuebla" class="btn btn-secondary">Médicos de Puebla</a>
                     <a href="/viewMySQL/PacientesMedicosF" class="btn btn-secondary">Pacientes por Médico(F)</a>
                     <a href="/viewMySQL/PacientesMedicosM" class="btn btn-secondary">Pacientes por Médico(M)</a>
                     <a href="/viewMySQL/PacientesFumadores" class="btn btn-secondary">Pacientes Fumadores</a>
                     <a href="/viewMySQL/MedicosPacientesEspecialidad" class="btn btn-secondary">Médicos por Paciente</a>
                 </div>
             </div>
+            <div class="col-md-2">
+                <h6 align="center">Operación</h6> 
+                <div class="btn-group">
+                    <a href="/view/medicos/agregar" class="btn btn-success">Agregar Médico</a>
+                </div>
+            </div>
         </div>
     </div>
 
-
     <br>
-    <h1 align="center">Tabla de los Pacientes</h1><br>
+    <h1 align="center">Tabla de los Médicos</h1><br>
     <div class="container">
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
             </div>
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tipo de Seguro</th>
-                                <th>CURP</th>
-                                <th>Tipo Sanguíneo</th>
-                                <th>Hábito Tóxico</th>
-                                <th>Condiciones Previas</th>
-                                <th>Alergia</th>
-                                <th>Motivo de Última Revisión</th>
+                                <th>Especialidad</th>
+                                <th>Turno</th>
+                                <th>Dias laborales</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for p in gpacientes %}
+                            {% for m in gmedicos %}
                             <tr>
-                                <td>{{p.id}}</td>
-                                <td>{{p.statusseguro}}</td>
-                                <td>{{p.curp}}</td>
-                                <td>{{p.tiposangre}}</td>
-                                <td>{{p.habitotoxico}}</td>
-                                <td>{{p.condicionesprevias}}</td>
-                                <td>{{p.alergia}}</td>
-                                <td>{{p.motivorevision}} (realizada el {{p.fecharevision}})</td>
+                                <td>{{m.id}}</td>
+                                <td>{{m.especialidad}}</td>
+                                <td>{{m.turno}}</td>
+                                <td>{{m.diaslaborales}}</td>
+                                <td>
+                                    <a href="/view/medicos/editar/{{m.id}}" class="btn btn-warning">Editar</a>
+                                    <a href="/view/medicos/eliminar/{{m.id}}" class="btn btn-danger">Eliminar</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
