@@ -20,7 +20,9 @@ from api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home),
+    path('', login),
+
+
     path('view/consultas', ViewConsultas),
     path('view/consultas/agregar', crearConsulta),
     path('view/consultas/editar/<int:id>', editarConsulta),
@@ -105,5 +107,7 @@ urlpatterns = [
     path('viewMySQL/MedicosPacientesEspecialidad',ViewMedicosPacientesEspecialidad),
     path('viewMySQL/UsernameNombre',ViewUsernameNombre),
 
-    #path('SA/', STUDENT_DATA),
+    path('procedimientos/editarDireccion', procedimientoEditarDireccion),
+    path('procedimientos/insertarDireccion', procedimientoInsertarDireccion),
+    path('procedimientos/eliminarDireccion', procedimientoEliminarDireccion),
 ]

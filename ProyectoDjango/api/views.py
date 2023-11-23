@@ -19,14 +19,16 @@ conexion = mysql.connector.connect(
     )
 
 
+def login (request):
+    return HttpResponse("<h1>Hola Mundo!</h1>") 
+
 
 #----------------------------------------------------------------------------------------------------
 
 #Sección para vistas generales
 
 #----------------------------------------------------------------------------------------------------
-def home (request):
-    return HttpResponse("<h1>Hola Mundo!</h1>") 
+
 
 
 def ViewConsultas(request):
@@ -436,28 +438,6 @@ def UsuarioDireccionInfoUsuario(request):
 
 
 
-#----------------------------------------------------------------------------------------------------
-
-#Vista para pruebas
-
-#----------------------------------------------------------------------------------------------------
-
-"""def STUDENT_DATA(request):
-    cursor = conexion.cursor()
-    cursor.execute("select * from medicamentos_consultas_clinica")
-    valores = cursor.fetchall()
-
-    arreglo = []
-    for v in valores:
-        arreglo.append(v[0])
-        arreglo.append(v[1])
-        arreglo.append(v[2])
-        arreglo.append(v[3])
-    
-
-    return HttpResponse(arreglo.ar)""" 
-#----------------------------------------------------------------------------------------------------
-
 
 
 
@@ -857,3 +837,41 @@ def ViewUsernameNombre(request):
 
     return render(request,"viewsMySQL/UsernameNombre.html",{"arreglo":arreglo})
 #----------------------------------------------------------------------------------------------------
+
+
+
+
+#----------------------------------------------------------------------------------------------------
+
+#Vista para Procedimientos Almacenados
+
+#----------------------------------------------------------------------------------------------------
+
+def procedimientoEditarDireccion(request):
+    try:
+        cursor = connection.cursor()
+        cursor.execute('call updateDireccion')
+        direccionesListados = Direccion.objects.filter(id__gt=49)
+        return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})
+    finally:
+        cursor.close()
+
+def procedimientoEliminarDireccion(request):
+    try:
+        cursor = connection.cursor()
+        cursor.execute('call deleteDireccion')
+        direccionesListados = Direccion.objects.filter(id__gt=49)
+        return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})
+    finally:
+        cursor.close()
+
+def procedimientoInsertarDireccion(request):
+    try:
+        cursor = connection.cursor()
+        cursor.execute('call insertDireccion')
+        direccionesListados = Direccion.objects.filter(id__gt=49)
+        return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})
+    finally:
+        cursor.close()
+#----------------------------------------------------------------------------------------------------
+
