@@ -8,7 +8,8 @@
 
             <label for="" class="form-class">{{ campo.label }}</label>
             {% if campo.label == 'Created at' %}
-            <input type="date" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped" placeholder="{{ campo.value}}" value="{{ campo.value}}">
+            <label for=""> ({{ campo.value }})</label>
+            <input type="date" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped" placeholder="{{ campo.value}}" value="{{ campo.value}}" required>
             {% else %}
                
                     {% if campo.label == 'Medico paciente' or campo.label == 'Userinfo' or campo.label == 'Cp' %}
