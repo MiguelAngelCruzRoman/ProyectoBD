@@ -12,7 +12,7 @@ from random import sample
 from api.forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-
+from django.core.paginator import Paginator
 
 conexion = mysql.connector.connect(
     host = "localhost",
@@ -41,13 +41,23 @@ def salir (request):
 @login_required
 def ViewConsultas(request):
     consultasListados = Consultas.objects.all()
-    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
+    paginator = Paginator(consultasListados,10)
+    pagina = request.GET.get("page") or 1
+    consultasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, consultasListados.paginator.num_pages+1)
+    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados, "paginas": paginas, 'pagina_actual':pagina_actual})
 
 
 @login_required
 def ViewDireccion(request):
     direccionesListados = Direccion.objects.all()
-    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})
+    paginator = Paginator(direccionesListados,10)
+    pagina = request.GET.get("page") or 1
+    direccionesListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, direccionesListados.paginator.num_pages+1)
+    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados, "paginas": paginas, 'pagina_actual':pagina_actual})
 
 
 
@@ -65,32 +75,64 @@ def ViewMedicamentos(request):
         arreglo.append(v[3])
 
     medicamentosListados = Medicamentos.objects.all()
-    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListados,"arreglo":arreglo})
+    paginator = Paginator(medicamentosListados,10)
+    pagina = request.GET.get("page") or 1
+    medicamentosListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, medicamentosListados.paginator.num_pages+1)
+
+    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListados,"arreglo":arreglo,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def ViewMedicos(request):
     medicosListados = Medico.objects.all()
-    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListados})
+    paginator = Paginator(medicosListados,10)
+    pagina = request.GET.get("page") or 1
+    medicosListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, medicosListados.paginator.num_pages+1)
+    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def ViewPaciente(request):
     pacienteListados = Paciente.objects.all()
-    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacienteListados})
+    paginator = Paginator(pacienteListados,10)
+    pagina = request.GET.get("page") or 1
+    pacienteListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, pacienteListados.paginator.num_pages+1)
+    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacienteListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def ViewReceta(request):
     recetasListados = Receta.objects.all()
-    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListados})
+    paginator = Paginator(recetasListados,10)
+    pagina = request.GET.get("page") or 1
+    recetasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, recetasListados.paginator.num_pages+1)
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def ViewUserinfo(request):
     userInfoListados = Userinfo.objects.all()
-    return render(request,"userinfo/gestionaruserInfo.html",{"guserInfo": userInfoListados})
+    usersListados = Users.objects.all()
+    paginator = Paginator(userInfoListados,10)
+    pagina = request.GET.get("page") or 1
+    userInfoListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, userInfoListados.paginator.num_pages+1)
+    return render(request,"userinfo/gestionaruserInfo.html",{"gusers": usersListados,"guserInfo": userInfoListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def ViewUsers(request):
     usersListados = Users.objects.all()
-    return render(request,"users/gestionarUsers.html",{"gusers": usersListados})
+    paginator = Paginator(usersListados,10)
+    pagina = request.GET.get("page") or 1
+    usersListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, usersListados.paginator.num_pages+1)
+    return render(request,"users/gestionarUsers.html",{"gusers": usersListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 #----------------------------------------------------------------------------------------------------
 
 
@@ -122,6 +164,8 @@ def editarMedicamento(request,id):
 
 @login_required
 def eliminarMedicamento(request,id):
+    RecetaMedicamento.objects.filter(medicamento=id).delete()
+
     medicamento = Medicamentos.objects.get(id=id) 
     medicamento.delete()
 
@@ -152,6 +196,8 @@ def editarReceta(request,id):
 
 @login_required
 def eliminarReceta(request,id):
+    RecetaMedicamento.objects.filter(receta=id).delete()
+
     receta = Receta.objects.get(id=id) 
     receta.delete()
 
@@ -182,6 +228,17 @@ def editarConsulta(request,id):
 @login_required
 def eliminarConsulta(request,id):
     consulta = Consultas.objects.get(id=id) 
+    RecetaMedicamento.objects.filter(receta__consulta=consulta).delete()
+
+    try:
+        receta = Receta.objects.get(consulta=id) 
+    except Receta.DoesNotExist:
+        receta = None
+
+    if(receta != None):
+        receta.delete()
+
+
     consulta.delete()
 
     return redirect ('/view/consultas')
@@ -239,10 +296,25 @@ def editarMedico(request,id):
 
     return render(request,'medicos/editarMedico.html',{'formulario':formulario})
 
+
 @login_required
 def eliminarMedico(request,id):
-    medico = Medico.objects.get(id=id) 
+    
+    RecetaMedicamento.objects.filter(receta__consulta__medico_paciente__medico=id).delete()
+    Receta.objects.filter(consulta__medico_paciente__medico=id).delete()
+    Consultas.objects.filter(medico_paciente__medico=id).delete()
+    MedicoPaciente.objects.filter(medico=id).delete()
+
+    medico = Medico.objects.get(id=id)
+    users = Users.objects.get(medico=id)
+    userinfo = Userinfo.objects.get(id=Users.objects.get(medico=id))
+    direccion = Direccion.objects.filter(userinfo=userinfo)
+  
+    direccion.delete()
+    userinfo.delete()
+    users.delete()
     medico.delete()
+
 
     return redirect ('/view/medicos')
 
@@ -273,8 +345,21 @@ def editarPaciente(request,id):
 
 @login_required
 def eliminarPaciente(request,id):
-    paciente = Paciente.objects.get(id=id) 
+    RecetaMedicamento.objects.filter(receta__consulta__medico_paciente__paciente=id).delete()
+    Receta.objects.filter(consulta__medico_paciente__paciente=id).delete()
+    Consultas.objects.filter(medico_paciente__paciente=id).delete()
+    MedicoPaciente.objects.filter(paciente=id).delete()
+
+    paciente = Paciente.objects.get(id=id)
+    users = Users.objects.get(paciente=id)
+    userinfo = Userinfo.objects.get(id=Users.objects.get(paciente=id))
+    direccion = Direccion.objects.filter(userinfo=userinfo)
+  
+    direccion.delete()
+    userinfo.delete()
+    users.delete()
     paciente.delete()
+
 
     return redirect ('/view/pacientes')
 
@@ -301,8 +386,14 @@ def editarUserInfo(request,id):
 
 @login_required
 def eliminarUserInfo(request,id):
+    direccion = Direccion.objects.filter(userinfo=id)
+    direccion.delete()
+
     userinfo = Userinfo.objects.get(id=id) 
     userinfo.delete()
+    
+    user = Users.objects.get(id=id) 
+    user.delete()
 
     return redirect ('/view/usersinfo')
 
@@ -333,6 +424,12 @@ def editarUser(request,id):
 
 @login_required
 def eliminarUser(request,id):
+    direccion = Direccion.objects.filter(userinfo=id)
+    direccion.delete()
+
+    userinfo = Userinfo.objects.get(id=id) 
+    userinfo.delete()
+    
     user = Users.objects.get(id=id) 
     user.delete()
 
@@ -406,7 +503,7 @@ def dump_xml(request):
 
 #----------------------------------------------------------------------------------------------------
 @login_required
-def RecetaMedicamento(request):
+def RecetasMedicamento(request):
     cursor = conexion.cursor()
     cursor.execute("select rm.receta,group_concat(' ',m.nombreComercial,' (',m.nombreCinetifico,' de ',m.dosis,' mg)' ),r.fechaVencimiento  from receta_medicamento as rm join medicamentos as m on rm.medicamento = m.id join receta as r on rm.receta = r.id group by rm.receta order by rm.receta")
     valores = cursor.fetchall()
@@ -869,7 +966,12 @@ def ViewMedicosPacientesEspecialidad(request):
         arreglo.append(v[2])
         arreglo.append(v[3])
 
-    return render(request,"viewsMySQL/MedicosPacientesEspecialidad.html",{"arreglo":arreglo})
+    paginator = Paginator(arreglo,40)
+    pagina = request.GET.get("page") or 1
+    arreglo = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, arreglo.paginator.num_pages+1)
+    return render(request,"viewsMySQL/MedicosPacientesEspecialidad.html",{"arreglo":arreglo,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def ViewUsernameNombre(request):
@@ -885,7 +987,12 @@ def ViewUsernameNombre(request):
         arreglo.append(v[3])
         arreglo.append(v[4])
 
-    return render(request,"viewsMySQL/UsernameNombre.html",{"arreglo":arreglo})
+    paginator = Paginator(arreglo,55)
+    pagina = request.GET.get("page") or 1
+    arreglo = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, arreglo.paginator.num_pages+1)
+    return render(request,"viewsMySQL/UsernameNombre.html",{"arreglo":arreglo, "paginas": paginas, 'pagina_actual':pagina_actual})
 #----------------------------------------------------------------------------------------------------
 
 

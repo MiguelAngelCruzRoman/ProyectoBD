@@ -41,7 +41,7 @@
             <div class="col-md-2"></div>
 
             <div class="col-md-2">
-                <h6 align="center">Operación</h6> 
+                <h6 align="center">Operación</h6>
                 <div class="btn-group">
                     <a href="/view/direcciones/agregar" class="btn btn-success">Agregar Dirección</a>
                 </div>
@@ -61,6 +61,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Tipo</th>
                                 <th>Estado</th>
                                 <th>Municipio</th>
@@ -74,6 +75,7 @@
                         <tbody>
                             {% for d in gdirecciones %}
                             <tr>
+                                <td>{{d.id}}</td>
                                 <td>{{d.tipo}}</td>
                                 <td>{{d.estado}}</td>
                                 <td>{{d.municipio}}</td>
@@ -91,6 +93,38 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mt-3 justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    {% if gdirecciones.has_previous %}
+                    <li class="page-item">
+                        <a href="?page=1" class="page-link">Primera página</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{ gdirecciones.previous.page.number }}" class="page-link">&laquo;</a>
+                    </li>
+                    {% endif %}
+
+                    {% for pagina in paginas %}
+                    <li class="page-item {% if pagina_actual == pagina %} active {% endif %}">
+                        <a href="?page={{pagina}}" class="page-link">{{pagina}}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if gdirecciones.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{ gdirecciones.next_page_number }}" class="page-link">&raquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{ gdirecciones.paginator.num_pages }}" class="page-link">Última página</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
     </div>
 </body>

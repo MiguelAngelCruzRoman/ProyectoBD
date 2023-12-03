@@ -6,21 +6,25 @@
 
         {% else %}
 
-            <label for="" class="form-class">{{ campo.label }}</label>
-            {% if campo.label == 'Fechavencimiento' or campo.label == 'Created at'%}
-            <label for=""> ({{ campo.value }})</label>
-            <input type="date" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped" placeholder="{{ campo.value}}" value="{{ campo.value}}" required>
-            {% else %}
-                {% if campo.label == 'Consulta' or campo.label == 'Status' %}
-                <input type="number" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped" placeholder="{{ campo.label }}" value="{{ campo.value | default:''}}">
-                {% else %}
-                <input type="{{ campo.field.widget.input_type }}" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped" placeholder="{{ campo.label }}" value="{{ campo.value | default:''}}">
-                {% endif %}
-            {% endif %}
-            <div class="col-12 help-text">{{ campo.errors }}</div>
+        <label for="" class="form-class">{{ campo.label }}</label>
+        {% if campo.label == 'Fechavencimiento' or campo.label == 'Created at'%}
+        <label for=""> ({{ campo.value }})</label>
+        <input type="date" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped"
+            placeholder="{{ campo.value}}" value="{{ campo.value}}" required>
+        {% else %}
+        {% if campo.label == 'Consulta' or campo.label == 'Status' %}
+        <input type="number" class="form-control" name="{{ campo.name }}" id="" aria-describedby="helped"
+            placeholder="{{ campo.label }}" value="{{ campo.value | default:''}}">
+        {% else %}
+        <input type="{{ campo.field.widget.input_type }}" class="form-control" name="{{ campo.name }}" id=""
+            aria-describedby="helped" placeholder="{{ campo.label }}" value="{{ campo.value | default:''}}">
+        {% endif %}
+        {% endif %}
+        <div class="col-12 help-text">{{ campo.errors }}</div>
         {% endif %}
     </div>
     {% endfor %}
 
     <input name="" id="" class="btn btn-success" type="submit" value="Enviar información">
 </form>
+<a name="" id="" class="btn btn-primary" href="#" role="button" onclick="history.back()">Cancelar</a>

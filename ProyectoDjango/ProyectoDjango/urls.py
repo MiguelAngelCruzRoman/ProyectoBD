@@ -70,7 +70,7 @@ urlpatterns = [
 
     
 
-    path('consultaRelacionada/RecetaMedicamento',RecetaMedicamento),
+    path('consultaRelacionada/RecetaMedicamento',RecetasMedicamento),
     path('consultaRelacionada/PacientesPorCadaMedico',PacientesPorCadaMedico),
     path('consultaRelacionada/MedicosPorCadaPaciente',MedicosPorCadaPaciente),
     path('consultaRelacionada/UsuarioDireccionInfoUsuario',UsuarioDireccionInfoUsuario),
@@ -81,6 +81,7 @@ urlpatterns = [
     path('transaccion/CambiarConsultas', CambiarConsultas),
     path('transaccion/RegresarConsultas', RegresarConsultas),
     path('transaccion/CambiarMedicamentos', CambiarMedicamentos),
+    path('transaccion/RegresarMedicamentos', RegresarMedicamentos),
     path('transaccion/CorregirTurnos', CorregirTurnos),
     path('transaccion/RegresarTurnos', RegresarTurnos),
     path('transaccion/AtenderPacientes', AtenderPacientes),
