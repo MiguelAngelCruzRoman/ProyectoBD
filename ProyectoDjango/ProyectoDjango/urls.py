@@ -20,7 +20,7 @@ from api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', holaMundo),
+    path('', opciones),
     path('accounts/',include('django.contrib.auth.urls')),
     path('salir/',salir),
 

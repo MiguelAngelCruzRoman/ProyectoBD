@@ -22,9 +22,8 @@ conexion = mysql.connector.connect(
     )
 
 @login_required
-def holaMundo (request):
-    consultasListados = Consultas.objects.all()
-    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
+def opciones (request):
+    return render(request,"opciones.html")
 
 @login_required
 def salir (request):
