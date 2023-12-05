@@ -585,7 +585,12 @@ def CambiarConsultas(request):
             c.save()
 
     consultasListados = Consultas.objects.all()#[:10]
-    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
+    paginator = Paginator(consultasListados,10)
+    pagina = request.GET.get("page") or 1
+    consultasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, consultasListados.paginator.num_pages+1)
+    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados, "paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RegresarConsultas(request):
@@ -596,7 +601,12 @@ def RegresarConsultas(request):
             c.save()
 
     consultasListados = Consultas.objects.all()#[:10]
-    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados})
+    paginator = Paginator(consultasListados,10)
+    pagina = request.GET.get("page") or 1
+    consultasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, consultasListados.paginator.num_pages+1)
+    return render(request,"consultas/gestionarConsultas.html",{"gconsultas": consultasListados, "paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def CambiarCPDireccion(request):
@@ -626,7 +636,12 @@ def CambiarCPDireccion(request):
         d2.save()
 
     direccionesListados = Direccion.objects.all()
-    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados})    
+    paginator = Paginator(direccionesListados,10)
+    pagina = request.GET.get("page") or 1
+    direccionesListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, direccionesListados.paginator.num_pages+1)
+    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados, "paginas": paginas, 'pagina_actual':pagina_actual})   
 
 @login_required
 def RegresarCPDireccion(request):
@@ -655,7 +670,12 @@ def RegresarCPDireccion(request):
         d2.colonia ='Zapopan'
         d2.save()
     direccionesListados = Direccion.objects.all()
-    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados}) 
+    paginator = Paginator(direccionesListados,10)
+    pagina = request.GET.get("page") or 1
+    direccionesListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, direccionesListados.paginator.num_pages+1)
+    return render(request,"direcciones/gestionarDireccion.html",{"gdirecciones": direccionesListados, "paginas": paginas, 'pagina_actual':pagina_actual}) 
 
 @login_required
 def CambiarMedicamentos(request):
@@ -671,8 +691,25 @@ def CambiarMedicamentos(request):
                 c.fechacaducidad = c.fechacaducidad + datetime.timedelta(days=1024)
                 c.save()
 
-    medicamentosListado = Medicamentos.objects.all()#[:10]
-    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
+    cursor = conexion.cursor()
+    cursor.execute("select * from medicamentos_consultas_clinica")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+        arreglo.append(v[3])
+
+    medicamentosListados = Medicamentos.objects.all()
+    paginator = Paginator(medicamentosListados,10)
+    pagina = request.GET.get("page") or 1
+    medicamentosListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, medicamentosListados.paginator.num_pages+1)
+
+    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListados,"arreglo":arreglo,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RegresarMedicamentos(request):
@@ -688,8 +725,25 @@ def RegresarMedicamentos(request):
                 c.fechacaducidad = c.fechacaducidad - datetime.timedelta(days=1024)
                 c.save()
 
-    medicamentosListado = Medicamentos.objects.all()#[:10]
-    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListado})
+    cursor = conexion.cursor()
+    cursor.execute("select * from medicamentos_consultas_clinica")
+    valores = cursor.fetchall()
+
+    arreglo = []
+    for v in valores:
+        arreglo.append(v[0])
+        arreglo.append(v[1])
+        arreglo.append(v[2])
+        arreglo.append(v[3])
+
+    medicamentosListados = Medicamentos.objects.all()
+    paginator = Paginator(medicamentosListados,10)
+    pagina = request.GET.get("page") or 1
+    medicamentosListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, medicamentosListados.paginator.num_pages+1)
+
+    return render(request,"medicamento/gestionarMedicamentos.html",{"gmedicamentos": medicamentosListados,"arreglo":arreglo,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 
 @login_required
@@ -709,8 +763,13 @@ def CorregirTurnos(request):
                 c.turno = "Nocturno"
                 c.save()
 
-    medicosListado = Medico.objects.all()#[:10]
-    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListado})
+    medicosListados = Medico.objects.all()
+    paginator = Paginator(medicosListados,10)
+    pagina = request.GET.get("page") or 1
+    medicosListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, medicosListados.paginator.num_pages+1)
+    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RegresarTurnos(request):
@@ -729,8 +788,13 @@ def RegresarTurnos(request):
                 c.turno = "nocturno"
                 c.save()
 
-    medicosListado = Medico.objects.all()#[:10]
-    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListado})
+    medicosListados = Medico.objects.all()
+    paginator = Paginator(medicosListados,10)
+    pagina = request.GET.get("page") or 1
+    medicosListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, medicosListados.paginator.num_pages+1)
+    return render(request,"medicos/gestionarMedicos.html",{"gmedicos": medicosListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def AtenderPacientes(request):
@@ -743,8 +807,13 @@ def AtenderPacientes(request):
                 c.save()
             
 
-    pacientesListado = Paciente.objects.all()#[:10]
-    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacientesListado})
+    pacienteListados = Paciente.objects.all()
+    paginator = Paginator(pacienteListados,10)
+    pagina = request.GET.get("page") or 1
+    pacienteListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, pacienteListados.paginator.num_pages+1)
+    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacienteListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RevertirPacientes(request):
@@ -757,8 +826,13 @@ def RevertirPacientes(request):
                 c.save()
             
 
-    pacientesListado = Paciente.objects.all()#[:10]
-    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacientesListado})
+    pacienteListados = Paciente.objects.all()
+    paginator = Paginator(pacienteListados,10)
+    pagina = request.GET.get("page") or 1
+    pacienteListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, pacienteListados.paginator.num_pages+1)
+    return render(request,"pacientes/gestionarPacientes.html",{"gpacientes": pacienteListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RecetasExpiradas(request):
@@ -769,8 +843,13 @@ def RecetasExpiradas(request):
                 c.status = 0
                 c.save()         
 
-    recetasListado = Receta.objects.all()#[:10]
-    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListado})
+    recetasListados = Receta.objects.all()
+    paginator = Paginator(recetasListados,10)
+    pagina = request.GET.get("page") or 1
+    recetasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, recetasListados.paginator.num_pages+1)
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RevertirExpiradas(request):
@@ -781,8 +860,13 @@ def RevertirExpiradas(request):
                 c.status = 1
                 c.save()         
 
-    recetasListado = Receta.objects.all()#[:10]
-    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListado})
+    recetasListados = Receta.objects.all()
+    paginator = Paginator(recetasListados,10)
+    pagina = request.GET.get("page") or 1
+    recetasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, recetasListados.paginator.num_pages+1)
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RevertirExpiradas(request):
@@ -793,8 +877,13 @@ def RevertirExpiradas(request):
                 c.status = 1
                 c.save()         
 
-    recetasListado = Receta.objects.all()#[:10]
-    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListado})
+    recetasListados = Receta.objects.all()
+    paginator = Paginator(recetasListados,10)
+    pagina = request.GET.get("page") or 1
+    recetasListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, recetasListados.paginator.num_pages+1)
+    return render(request,"recetas/gestionarRecetas.html",{"grecetas": recetasListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def CambiarGenero(request):
@@ -808,8 +897,14 @@ def CambiarGenero(request):
                 c.genero = "M"
                 c.save()        
 
-    usersInfoListado = Userinfo.objects.all()#[:10]
-    return render(request,"userinfo/gestionaruserInfo.html",{"guserInfo": usersInfoListado})
+    userInfoListados = Userinfo.objects.all()
+    usersListados = Users.objects.all()
+    paginator = Paginator(userInfoListados,10)
+    pagina = request.GET.get("page") or 1
+    userInfoListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, userInfoListados.paginator.num_pages+1)
+    return render(request,"userinfo/gestionaruserInfo.html",{"gusers": usersListados,"guserInfo": userInfoListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RevertirGenero(request):
@@ -823,8 +918,14 @@ def RevertirGenero(request):
                 c.genero = "F"
                 c.save()        
 
-    usersInfoListado = Userinfo.objects.all()#[:10]
-    return render(request,"userinfo/gestionaruserInfo.html",{"guserInfo": usersInfoListado})
+    userInfoListados = Userinfo.objects.all()
+    usersListados = Users.objects.all()
+    paginator = Paginator(userInfoListados,10)
+    pagina = request.GET.get("page") or 1
+    userInfoListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, userInfoListados.paginator.num_pages+1)
+    return render(request,"userinfo/gestionaruserInfo.html",{"gusers": usersListados,"guserInfo": userInfoListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def GenerarContraseña(request):
@@ -841,8 +942,13 @@ def GenerarContraseña(request):
             c.password = password_result
             c.save()        
 
-    usersListado = Users.objects.all()#[:10]
-    return render(request,"users/gestionarUsers.html",{"gusers": usersListado})
+    usersListados = Users.objects.all()
+    paginator = Paginator(usersListados,10)
+    pagina = request.GET.get("page") or 1
+    usersListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, usersListados.paginator.num_pages+1)
+    return render(request,"users/gestionarUsers.html",{"gusers": usersListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 
 @login_required
 def RevertirContraseña(request):
@@ -852,8 +958,13 @@ def RevertirContraseña(request):
             c.password = "password"+ str(c.id)
             c.save()        
 
-    usersListado = Users.objects.all()#[:10]
-    return render(request,"users/gestionarUsers.html",{"gusers": usersListado})
+    usersListados = Users.objects.all()
+    paginator = Paginator(usersListados,10)
+    pagina = request.GET.get("page") or 1
+    usersListados = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, usersListados.paginator.num_pages+1)
+    return render(request,"users/gestionarUsers.html",{"gusers": usersListados,"paginas": paginas, 'pagina_actual':pagina_actual})
 #----------------------------------------------------------------------------------------------------
 
 
