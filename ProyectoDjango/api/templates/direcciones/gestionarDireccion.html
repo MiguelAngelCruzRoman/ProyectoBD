@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 
 
@@ -14,45 +18,57 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
-                <h6 align="center">Transacciones</h6>
-                <div class="btn-group">
-                    <a href="/transaccion/CambiarCPDireccion" class="btn btn-secondary">Cambiar CP</a>
-                    <a href="/transaccion/RegresarCPDireccion" class="btn btn-secondary">Regresar CP</a>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <h6 align="center">Vistas</h6>
-                <div class="btn-group">
-                    <a href="/viewMySQL/MedicosPuebla" class="btn btn-secondary">Médicos de Puebla</a>
-                    <a href="/viewMySQL/MedicamentosConsultaClinica" class="btn btn-secondary">Medicamentos en
-                        Clínicas</a>
-                </div>
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-                <h6 align="center">Procedimientos almacenados</h6>
-                <div class="btn-group">
-                    <a href="/procedimientos/insertarDireccion" class="btn btn-secondary">Insert</a>
-                    <a href="/procedimientos/editarDireccion" class="btn btn-secondary">Update</a>
-                    <a href="/procedimientos/eliminarDireccion" class="btn btn-secondary">Delete</a>
-                </div>
-            </div>
-            <div class="col-md-2"></div>
 
-            <div class="col-md-2">
-                <h6 align="center">Operación</h6>
-                <div class="btn-group">
-                    <a href="/view/direcciones/agregar" class="btn btn-success">Agregar Dirección</a>
-                </div>
-            </div>
         </div>
     </div>
 
 
     <br>
-    <h1 align="center">Tabla de Direcciones</h1><br>
+
     <div class="container">
+        <h1 align="center">Administrar Direcciones
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Más opciones
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                    <div class="col-md-2">
+                        <h6 align="center">Transacciones</h6>
+                        <div class="btn-group">
+                            <a href="/transaccion/CambiarCPDireccion" class="btn btn-danger">Cambiar CP</a>
+                            <a href="/transaccion/RegresarCPDireccion" class="btn btn-danger">Regresar CP</a>
+                        </div>
+                    </div><br>
+
+                    <div class="col-md-2">
+                        <h6 align="center">Vistas</h6>
+                        <div class="btn-group">
+                            <a href="/viewMySQL/MedicosPuebla" class="btn btn-warning">Médicos de Puebla</a>
+                            <a href="/viewMySQL/MedicamentosConsultaClinica" class="btn btn-warning">Medicamentos en
+                                Clínicas</a>
+                        </div>
+                    </div><br>
+
+                    <div class="col-md-2">
+                        <h6 align="center">Procedimientos almacenados</h6>
+                        <div class="btn-group">
+                            <a href="/procedimientos/insertarDireccion" class="btn btn-secondary">Insert</a>
+                            <a href="/procedimientos/editarDireccion" class="btn btn-secondary">Update</a>
+                            <a href="/procedimientos/eliminarDireccion" class="btn btn-secondary">Delete</a>
+                        </div>
+                    </div><br>
+
+                    <div class="col-md-2">
+                        <h6 align="center">Operaciones</h6>
+                        <div class="btn-group">
+                            <a href="/view/direcciones/agregar" class="btn btn-success">Agregar Dirección</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h1><br>
         <div class="row">
             <div class="col-md-2">
             </div>
@@ -63,13 +79,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Tipo</th>
-                                <th>Estado</th>
-                                <th>Municipio</th>
+                                <th>Municipio y Estado</th>
                                 <th>Colonia</th>
-                                <th>Calle</th>
-                                <th>C.P</th>
-                                <th>No.ext (No.interior)</th>
-                                <th>Acciones</th>
+                                <th>Calle, No.ext (No.interior)</th>
+                                <th colspan="">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,15 +90,16 @@
                             <tr>
                                 <td>{{d.id}}</td>
                                 <td>{{d.tipo}}</td>
-                                <td>{{d.estado}}</td>
-                                <td>{{d.municipio}}</td>
+                                <td>{{d.municipio}}, {{d.estado}} (C.P {{d.cp}})</td>
                                 <td>{{d.colonia}}</td>
-                                <td>{{d.calle}}</td>
-                                <td>{{d.cp}}</td>
-                                <td>{{d.noext}}({{d.noint}})</td>
+                                <td>{{d.calle}} #{{d.noext}} ({{d.noint}})</td>
                                 <td>
-                                    <a href="/view/direcciones/editar/{{d.id}}" class="btn btn-warning">Editar</a>
-                                    <a href="/view/direcciones/eliminar/{{d.id}}" class="btn btn-danger">Eliminar</a>
+                                    <a href="/view/direcciones/editar/{{d.id}}" class="btn btn-warning"><img
+                                            src="https://icones.pro/wp-content/uploads/2022/07/symbole-de-crayon-noir-icone.png"
+                                            alt="Imagen de editar" height="30px" width="30px"> Editar</a>
+                                    <a href="/view/direcciones/eliminar/{{d.id}}" class="btn btn-danger"><img
+                                            src="https://cdn-icons-png.flaticon.com/512/54/54195.png"
+                                            alt="Imagen de eliminar" height="30px" width="30px"> Eliminar</a>
                                 </td>
                             </tr>
                             {% endfor %}
